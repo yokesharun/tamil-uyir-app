@@ -50,17 +50,47 @@ body {
   margin-bottom: 18px;
 }
 .logo { font-size: 28px; }
-.menu-title {
-  font-size: clamp(20px, 4.5vw, 30px);
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+.tab {
+  border: none;
+  background: transparent;
+  font-family: inherit;
+  cursor: pointer;
+  font-size: clamp(14px, 3.2vw, 22px);
   font-weight: 700;
-  color: #ff9ec4;
-}
-.menu-sub {
-  margin-left: auto;
-  font-size: clamp(11px, 2.6vw, 15px);
-  letter-spacing: 1px;
   color: var(--ink-soft);
+  padding: 8px 14px;
+  border-radius: 18px;
+  transition: background .2s, color .2s, transform .15s;
 }
+.tab.active { background: var(--pink); color: #d76a9c; }
+.tab:active { transform: scale(.94); }
+
+.toggles {
+  margin-left: auto;
+  display: flex;
+  gap: 8px;
+}
+.toggle {
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 16px;
+  min-width: 46px;
+  height: 46px;
+  border-radius: 16px;
+  background: var(--lilac);
+  color: var(--ink-soft);
+  transition: transform .15s, background .2s, color .2s;
+}
+.toggle:active { transform: scale(.9); }
+.toggle.on { background: var(--mint); color: #5fa97e; }
 
 /* ---- stage / card ---- */
 .stage {
@@ -93,8 +123,10 @@ body {
 .letter-panel {
   flex: 0 0 42%;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 6px;
   padding: 24px;
 }
 .letter {
@@ -102,6 +134,16 @@ body {
   line-height: 1.3;
   font-weight: 700;
   color: #b79cff;
+}
+.numeral {
+  font-size: clamp(30px, 6vw, 48px);
+  font-weight: 700;
+  color: #fff;
+  background: #ffb8d2;
+  min-width: 56px;
+  padding: 2px 14px;
+  border-radius: 18px;
+  box-shadow: 0 6px 14px rgba(255,158,196,.4);
 }
 
 /* right: the details */
@@ -132,23 +174,110 @@ body {
   font-size: clamp(15px, 3.5vw, 22px);
   color: var(--ink-soft);
 }
+.roman {
+  display: none;
+  font-size: clamp(14px, 3vw, 20px);
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #c79ad0;
+  background: var(--lilac);
+  padding: 3px 14px;
+  border-radius: 12px;
+}
+body.show-roman .roman { display: block; }
 
-/* ---- dots ---- */
-.dots {
+/* ---- card position context for overlays ---- */
+.card { position: relative; }
+
+/* ---- celebration sparkles ---- */
+.sparkles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.sparkles span {
+  position: absolute;
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  opacity: 0;
+  animation: sparkle 1s ease-out forwards;
+}
+.sparkles span:nth-child(1){ left:12%; top:20%; background:#ffd0e0; animation-delay:.02s; }
+.sparkles span:nth-child(2){ left:82%; top:18%; background:#cfe6ff; animation-delay:.10s; }
+.sparkles span:nth-child(3){ left:24%; top:74%; background:#fff0b8; animation-delay:.06s; }
+.sparkles span:nth-child(4){ left:70%; top:78%; background:#bfe6c8; animation-delay:.14s; }
+.sparkles span:nth-child(5){ left:50%; top:10%; background:#ddccf5; animation-delay:.18s; }
+.sparkles span:nth-child(6){ left:90%; top:55%; background:#ffd9b3; animation-delay:.08s; }
+@keyframes sparkle {
+  0% { opacity: 0; transform: scale(0) translateY(0); }
+  40% { opacity: 1; transform: scale(1.4) translateY(-10px); }
+  100% { opacity: 0; transform: scale(.4) translateY(-26px); }
+}
+.cheer {
+  position: absolute;
+  inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 120px;
+  pointer-events: none;
+  animation: cheer 1.4s ease-out forwards;
+}
+@keyframes cheer {
+  0% { opacity: 0; transform: scale(.3); }
+  30% { opacity: 1; transform: scale(1.2); }
+  70% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1.1); }
+}
+
+/* ---- per-art idle animations ---- */
+.art g { transform-box: fill-box; transform-origin: center; }
+.art g.bob { animation: bob 2.2s ease-in-out infinite; }
+.art g.wiggle { animation: wiggle 2s ease-in-out infinite; }
+.art g.swing { animation: swing 2.4s ease-in-out infinite; transform-origin: top center; }
+.art g.rock { animation: rock 3s ease-in-out infinite; }
+.art g.pulse { animation: pulse 2s ease-in-out infinite; }
+.art g.spin-slow { animation: spin 9s linear infinite; }
+.art g.blink { animation: blink 4s steps(1) infinite; }
+@keyframes bob { 0%,100%{ transform: translateY(0); } 50%{ transform: translateY(-7px); } }
+@keyframes wiggle { 0%,100%{ transform: rotate(-5deg); } 50%{ transform: rotate(5deg); } }
+@keyframes swing { 0%,100%{ transform: rotate(-9deg); } 50%{ transform: rotate(9deg); } }
+@keyframes rock { 0%,100%{ transform: rotate(-4deg); } 50%{ transform: rotate(4deg); } }
+@keyframes pulse { 0%,100%{ transform: scale(1); } 50%{ transform: scale(1.1); } }
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes blink { 0%,92%,100%{ transform: scaleY(1); } 96%{ transform: scaleY(.1); } }
+
+/* ---- letter strip ---- */
+.strip {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 8px;
-  max-width: 360px;
+  max-width: 880px;
   margin: 16px 0 10px;
 }
-.dot {
-  width: 11px; height: 11px;
-  border-radius: 50%;
-  background: rgba(255,255,255,.7);
-  transition: transform .2s, background .2s;
+.chip {
+  flex: 0 0 auto;
+  min-width: 46px;
+  height: 46px;
+  padding: 0 10px;
+  border: none;
+  border-radius: 14px;
+  background: var(--card);
+  color: var(--ink-soft);
+  font-family: inherit;
+  font-size: clamp(18px, 4vw, 24px);
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(180,150,200,.18);
+  transition: transform .18s, background .18s, color .18s;
 }
-.dot.active { background: #ff9ec4; transform: scale(1.5); }
+.chip:active { transform: scale(.9); }
+.chip.active {
+  background: #ff9ec4;
+  color: #fff;
+  transform: scale(1.18);
+  box-shadow: 0 6px 16px rgba(255,158,196,.5);
+}
 
 /* ---- controls ---- */
 .controls {
@@ -178,8 +307,8 @@ body {
   color: #fff;
 }
 
-/* ---- responsive: stack the card on small screens ---- */
-@media (max-width: 600px) {
+/* ---- responsive: stack the card on small portrait screens ---- */
+@media (max-width: 600px) and (orientation: portrait) {
   .card { flex-direction: column; min-height: 0; }
   .letter-panel {
     flex: none;
@@ -189,5 +318,38 @@ body {
   }
   .letter { font-size: clamp(96px, 34vw, 150px); line-height: 1.2; }
   .detail-panel { padding: 22px 18px 28px; }
-  .menu-sub { display: none; }
+}
+
+/* menu wraps nicely on small screens */
+@media (max-width: 600px) {
+  .menu { flex-wrap: wrap; gap: 8px; padding: 12px 14px; }
+  .tab { font-size: 14px; padding: 7px 10px; }
+  .cheer { font-size: 90px; }
+
+  /* single horizontally-scrollable row of big chips (no cramped wrapping) */
+  .strip {
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    overflow-x: auto;
+    overflow-y: hidden;
+    max-width: 100%;
+    padding: 4px 6px 8px;
+    scroll-padding: 0 40%;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .strip::-webkit-scrollbar { display: none; }
+  .chip { min-width: 48px; height: 48px; font-size: 22px; }
+}
+
+/* landscape phones / tablets: keep the roomy two-panel card */
+@media (orientation: landscape) {
+  .card { flex-direction: row; min-height: 300px; }
+}
+
+/* respect users who prefer less motion */
+@media (prefers-reduced-motion: reduce) {
+  body { animation: none; }
+  .art, .art g, .card, .sparkles span, .cheer { animation: none !important; }
+  .sparkles, .cheer { display: none; }
 }

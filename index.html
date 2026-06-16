@@ -3,21 +3,33 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>உயிர் எழுத்துக்கள் — Tamil Vowels for Kids</title>
-  <link rel="stylesheet" href="styles.css?v=4" />
+  <title>உயிர் · மெய் · எண்கள் — Tamil for Kids</title>
+  <meta name="description" content="A simple, colorful, kawaii app for kids to learn Tamil vowels, consonants and numbers — with pictures, animation and pronunciation." />
+  <meta name="theme-color" content="#ffd6e8" />
+  <meta property="og:title" content="Tamil Letters & Numbers for Kids" />
+  <meta property="og:description" content="Learn Tamil உயிர், மெய் எழுத்துக்கள் and எண்கள் with cute pastel pictures." />
+  <link rel="icon" href="icon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="icon.svg" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="styles.css?v=7" />
 </head>
 <body>
   <nav class="menu">
     <span class="logo">🌸</span>
-    <span class="menu-title">உயிர் எழுத்துக்கள்</span>
-    <span class="menu-sub">Uyir Ezhuthukkal</span>
+    <div class="tabs">
+      <button class="tab active" data-set="uyir">உயிர் எழுத்துக்கள்</button>
+      <button class="tab" data-set="mey">மெய் எழுத்துக்கள்</button>
+      <button class="tab" data-set="numbers">எண்கள்</button>
+    </div>
+    <div class="toggles">
+      <button id="roman" class="toggle on" aria-label="Toggle romanization">ABC</button>
+      <button id="sound" class="toggle" aria-label="Mute">🔊</button>
+    </div>
   </nav>
 
-  <main id="stage" class="stage">
-    <!-- card injected by app.js -->
-  </main>
+  <main id="stage" class="stage"><!-- card injected by app.js --></main>
 
-  <div class="dots" id="dots"></div>
+  <div class="strip" id="strip"></div>
 
   <div class="controls">
     <button id="prev" class="ctrl" aria-label="Previous">⟨</button>
@@ -25,6 +37,7 @@
     <button id="next" class="ctrl" aria-label="Next">⟩</button>
   </div>
 
-  <script src="app.js?v=4"></script>
+  <script src="art.js?v=7"></script>
+  <script src="app.js?v=7"></script>
 </body>
 </html>

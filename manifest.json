@@ -1,0 +1,14 @@
+{
+  "name": "Tamil for Kids — உயிர் · மெய் · எண்கள்",
+  "short_name": "Tamil Kids",
+  "description": "Learn Tamil vowels, consonants and numbers with cute pastel pictures.",
+  "start_url": ".",
+  "scope": ".",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#ffe5f0",
+  "theme_color": "#ffd6e8",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}
