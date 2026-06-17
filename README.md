@@ -5,30 +5,36 @@ A simple, colorful, **kawaii** web app that helps young children learn Tamil:
 - **உயிர் எழுத்துக்கள்** — the 12 vowels
 - **மெய் எழுத்துக்கள்** — the 18 consonants
 - **எண்கள்** — numbers 1–10 (Tamil digit + Arabic numeral + counting pictures)
+- **உயிர்மெய் (க)** — the க-family combined letters (க கா கி … கௌ) as a demo set
 
 Each card shows a big letter/number, a cute hand-drawn pastel picture, the example word,
-and an optional romanization — all in an auto-playing slideshow a toddler can just watch.
+and an optional romanization — in an auto-playing slideshow a toddler can just watch.
 
 ## Features
-- 🎞️ **Auto-pilot slideshow** — advances every 5s and loops; tap / arrows / space to control.
-- 🔊 **Pronunciation** — speaks each letter & word via the browser's speech engine
-  (Web Speech API, `ta-IN`). Tap the big letter to replay. 🔊 button mutes (remembered).
-  *Note: silent on devices that have no Tamil voice installed.*
-- 🔤 **Romanization toggle** — show/hide roman text (`a`, `k`, `ondru`…) with the **ABC** button.
-- 🟪 **Letter strip** — every letter/number in the set, shown in a row that highlights the
-  current one and scrolls/jumps on tap.
+- 🌸 **Tap-to-start splash** — the first tap unlocks audio (needed on mobile) and begins.
+- 🎞️ **Auto-pilot slideshow** — speaks the letter, pauses ~1s, speaks the word, then moves
+  on. The slide never changes mid-speech. Tap / arrows / space to control.
+- 🔊 **Pronunciation** — uses the **Samantha** voice (Web Speech API) for everything.
+  Tap the big letter or the **🔊 மீண்டும்** button to replay. The 🔊 button mutes (remembered).
+  *If a device has no "Samantha" voice, a small note shows and pictures still work.*
+- 🎮 **Quiz game** — "find the letter": hear a letter, tap the matching picture out of 3.
+  Correct answers earn ⭐ stars (saved between visits).
+- 🔀 **Shuffle** and 🔂 **repeat-one** play modes.
+- 🔤 **Romanization toggle** — show/hide roman text (`a`, `k`, `ondru`…) with **ABC**.
+- 🟪 **Letter strip** — every letter/number in a row that highlights the current one and
+  scrolls / jumps on tap.
 - ✨ **Animations** — gentle per-picture motion plus a sparkle celebration on each card.
-- 🧸 **Pastel kawaii** look, fully **responsive** (phone portrait stacks, landscape/tablet
+- 🧸 **Pastel kawaii** look, fully **responsive** (phone portrait stacks; landscape/tablet
   uses a two-panel card).
 - 📲 **Installable PWA** — works fully offline after the first visit.
-- ♿ Honors `prefers-reduced-motion`.
+- ♿ Honors `prefers-reduced-motion`; pauses speech when the tab is hidden.
 
 ## Files
 | File | Purpose |
 |------|---------|
-| `index.html` | Markup: menu tabs, card stage, letter strip, controls |
-| `styles.css` | Pastel theme, layout, responsive rules, animations |
-| `app.js` | Data (the 3 sets), slideshow logic, audio, toggles, SW registration |
+| `index.html` | Menu tabs, mode buttons, card stage, letter strip, splash, banner |
+| `styles.css` | Pastel theme, layout, responsive rules, animations, quiz/splash |
+| `app.js` | The 4 sets, slideshow + speech logic, quiz, stars, toggles, SW registration |
 | `art.js` | All inline SVG drawings + the `countArt()` helper |
 | `manifest.json`, `sw.js`, `icon.svg` | PWA install + offline support |
 
@@ -43,21 +49,19 @@ python3 -m http.server 8000
 # open http://localhost:8000
 ```
 
+> **Note on caching:** the app registers a service worker, so after editing files do a
+> hard refresh (Cmd/Ctrl+Shift+R) — or bump the `?v=` query in `index.html` + the
+> `CACHE` name in `sw.js` — to pick up changes.
+
 ## Deploy to GitHub Pages
+The repo is at `yokesharun/tamil-uyir-app`. To publish:
+
 ```bash
 cd tamil-uyir-app
-git init && git add . && git commit -m "Tamil letters & numbers app for kids"
-
-# create + push the repo (requires the gh CLI, logged in)
-gh repo create tamil-kids --public --source=. --remote=origin --push
-
-# enable Pages on the main branch (root)
-gh api -X POST repos/:owner/tamil-kids/pages \
-  -f "source[branch]=main" -f "source[path]=/" 2>/dev/null || \
-  echo "Enable Pages manually: Settings → Pages → Branch: main / root"
+git add -A
+git commit -m "Update app"
+git push origin main
 ```
 
-Live at `https://<your-username>.github.io/tamil-kids/`.
-
-(No `gh`? Create the repo on github.com, push these files, then **Settings → Pages →
-Source: main / root**.)
+Then enable Pages once under **Settings → Pages → Source: main / root**.
+Live at `https://yokesharun.github.io/tamil-uyir-app/`.

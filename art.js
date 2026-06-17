@@ -49,12 +49,6 @@ const ART = {
     <circle cx="100" cy="40" r="9" fill="${P.pink}"/>
     <circle cx="135" cy="150" r="16" fill="#f6d9c0"/>
     <path d="M120 150 Q128 134 142 142" stroke="${P.pink2}" stroke-width="10" fill="none" stroke-linecap="round"/>`, "bob"),
-  squirrel: svg(`<ellipse cx="100" cy="150" rx="55" ry="40" fill="${P.brown2}"/>
-    <path d="M150 150 Q195 120 165 60 Q140 80 150 150 Z" fill="${P.brown}"/>
-    <circle cx="100" cy="95" r="42" fill="${P.brown}"/>
-    <path d="M78 60 L70 42 L90 56 Z" fill="${P.brown2}"/><path d="M122 60 L130 42 L110 56 Z" fill="${P.brown2}"/>
-    ${eyes(86,114,90)}<circle cx="100" cy="102" r="4" fill="${P.dark}"/>
-    <circle cx="76" cy="102" r="7" fill="${P.cheek}"/><circle cx="124" cy="102" r="7" fill="${P.cheek}"/>`, "bob"),
   goat: svg(`<ellipse cx="100" cy="135" rx="55" ry="38" fill="#f4eee6"/>
     <rect x="72" y="162" width="10" height="26" rx="5" fill="${P.grey2}"/><rect x="118" y="162" width="10" height="26" rx="5" fill="${P.grey2}"/>
     <circle cx="100" cy="90" r="36" fill="#fbf6ef"/>
@@ -198,4 +192,47 @@ const ART = {
     <circle cx="60" cy="112" r="6" fill="${P.cheek}"/>
     <path d="M92 80 Q100 95 110 82 M92 140 Q100 125 110 138" fill="#ffd9b3"/>
     <path d="M100 95 q14 15 0 30" stroke="#ffd9b3" stroke-width="3" fill="none"/>`, "wiggle"),
+
+  // ---- க-series (uyirmey demo) ----
+  door: svg(`<rect x="62" y="34" width="76" height="146" rx="8" fill="${P.brown}"/>
+    <rect x="72" y="44" width="56" height="126" rx="6" fill="${P.brown2}"/>
+    <rect x="84" y="58" width="32" height="44" rx="4" fill="${P.orange}"/>
+    <rect x="84" y="112" width="32" height="44" rx="4" fill="${P.orange}"/>
+    <circle cx="124" cy="108" r="5" fill="${P.yellow}"/>`, "wiggle"),
+  parrot: svg(`<ellipse cx="98" cy="112" rx="34" ry="44" fill="${P.green2}"/>
+    <circle cx="98" cy="74" r="26" fill="${P.green}"/>
+    <path d="M120 74 L150 70 Q138 86 120 86 Z" fill="${P.orange}"/>
+    <circle cx="104" cy="70" r="5" fill="${P.dark}"/>
+    <circle cx="90" cy="84" r="6" fill="${P.cheek}"/>
+    <path d="M70 120 Q44 130 64 150 Q52 152 70 162" fill="${P.green}"/>
+    <path d="M96 154 Q98 178 90 182 M104 154 Q106 178 114 182" stroke="${P.green2}" stroke-width="6" fill="none" stroke-linecap="round"/>`, "bob"),
+  horse: svg(`<ellipse cx="96" cy="120" rx="48" ry="30" fill="${P.brown}"/>
+    <rect x="64" y="138" width="9" height="34" rx="4" fill="${P.brown2}"/><rect x="118" y="138" width="9" height="34" rx="4" fill="${P.brown2}"/>
+    <rect x="86" y="138" width="9" height="34" rx="4" fill="${P.brown2}"/>
+    <path d="M132 116 Q150 64 122 56 L112 70 Q128 84 120 116 Z" fill="${P.brown}"/>
+    <path d="M128 60 Q142 64 140 84" stroke="${P.brown2}" stroke-width="7" fill="none" stroke-linecap="round"/>
+    <circle cx="135" cy="78" r="3.5" fill="${P.dark}"/>
+    <path d="M50 118 Q34 130 44 150" stroke="${P.brown2}" stroke-width="7" fill="none" stroke-linecap="round"/>`, "bob"),
+  basket: svg(`<path d="M52 96 L148 96 L138 168 L62 168 Z" fill="${P.brown}"/>
+    <path d="M64 96 L72 168 M84 96 L88 168 M116 96 L112 168 M136 96 L128 168" stroke="${P.brown2}" stroke-width="4"/>
+    <path d="M52 96 Q100 56 148 96" stroke="${P.brown2}" stroke-width="9" fill="none"/>
+    <circle cx="84" cy="86" r="14" fill="${P.red}"/><circle cx="112" cy="86" r="14" fill="${P.orange}"/><circle cx="100" cy="78" r="13" fill="${P.pink2}"/>`, "wiggle"),
+  hand: svg(`<rect x="78" y="96" width="44" height="74" rx="18" fill="#f6d9c0"/>
+    <rect x="80" y="48" width="9" height="56" rx="4" fill="#f6d9c0"/>
+    <rect x="94" y="40" width="9" height="64" rx="4" fill="#f6d9c0"/>
+    <rect x="108" y="44" width="9" height="60" rx="4" fill="#f6d9c0"/>
+    <rect x="121" y="56" width="9" height="50" rx="4" fill="#f6d9c0"/>
+    <path d="M78 110 Q60 104 60 124 Q60 136 78 138 Z" fill="#f6d9c0"/>
+    <circle cx="100" cy="135" r="10" fill="${P.cheek}"/>`, "wiggle"),
+  flag: svg(`<rect x="60" y="30" width="9" height="150" rx="4" fill="${P.brown2}"/>
+    <path d="M69 36 L150 36 L134 60 L150 84 L69 84 Z" fill="${P.pink2}"/>
+    <circle cx="100" cy="60" r="10" fill="${P.yellow}"/>`, "swing"),
+  hen: svg(`<ellipse cx="100" cy="124" rx="42" ry="34" fill="#fff6ef"/>
+    <circle cx="128" cy="92" r="20" fill="#fff6ef"/>
+    <path d="M126 72 q6 -14 12 0 q8 -10 10 4 q10 -4 4 10 Z" fill="${P.red}"/>
+    <path d="M146 94 L164 90 L148 102 Z" fill="${P.orange}"/>
+    <path d="M132 104 q4 8 -4 12" stroke="${P.red}" stroke-width="3" fill="none"/>
+    <circle cx="130" cy="88" r="3.5" fill="${P.dark}"/>
+    <path d="M60 118 Q40 120 50 140 Q40 142 58 156" fill="#fbeede"/>
+    <rect x="88" y="156" width="7" height="16" rx="3" fill="${P.orange}"/><rect x="108" y="156" width="7" height="16" rx="3" fill="${P.orange}"/>`, "bob"),
 };
