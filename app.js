@@ -2,7 +2,7 @@
 
 const SETS = {
   uyir: [
-    { l: "அ", w: "அணில்", m: "Squirrel", r: "a", art: "squirrel" },
+    { l: "அ", w: "அம்மா", m: "Mother", r: "a", art: "amma" },
     { l: "ஆ", w: "ஆடு", m: "Goat", r: "aa", art: "goat" },
     { l: "இ", w: "இலை", m: "Leaf", r: "i", art: "leaf" },
     { l: "ஈ", w: "ஈ", m: "Fly", r: "ii", art: "fly" },

@@ -40,6 +40,15 @@ function countArt(n) {
 
 const ART = {
   // ---- uyir ----
+  amma: svg(`<path d="M58 175 Q58 120 100 120 Q142 120 142 175 Z" fill="${P.pink2}"/>
+    <circle cx="100" cy="80" r="34" fill="#f6d9c0"/>
+    <path d="M66 78 Q60 38 100 36 Q140 38 134 78 Q134 56 100 56 Q66 56 66 78 Z" fill="${P.brown2}"/>
+    ${eyes(88,112,80)}
+    <path d="M90 92 q10 9 20 0" stroke="${P.dark}" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <circle cx="80" cy="88" r="6" fill="${P.cheek}"/><circle cx="120" cy="88" r="6" fill="${P.cheek}"/>
+    <circle cx="100" cy="40" r="9" fill="${P.pink}"/>
+    <circle cx="135" cy="150" r="16" fill="#f6d9c0"/>
+    <path d="M120 150 Q128 134 142 142" stroke="${P.pink2}" stroke-width="10" fill="none" stroke-linecap="round"/>`, "bob"),
   squirrel: svg(`<ellipse cx="100" cy="150" rx="55" ry="40" fill="${P.brown2}"/>
     <path d="M150 150 Q195 120 165 60 Q140 80 150 150 Z" fill="${P.brown}"/>
     <circle cx="100" cy="95" r="42" fill="${P.brown}"/>
