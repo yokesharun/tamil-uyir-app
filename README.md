@@ -12,8 +12,8 @@ and an optional romanization — in an auto-playing slideshow a toddler can just
 
 ## Features
 - 🌸 **Tap-to-start splash** — the first tap unlocks audio (needed on mobile) and begins.
-- 🎞️ **Auto-pilot slideshow** — speaks the letter, pauses ~1s, speaks the word, then moves
-  on. The slide never changes mid-speech. Tap / arrows / space to control.
+- 🎞️ **Auto-pilot slideshow** — plays the letter, pauses ~1s, plays the word, then moves
+  on. The slide never changes mid-audio. Tap / arrows / space to control.
 - 🔊 **Pronunciation** — plays **pre-recorded Tamil audio clips** (rendered with macOS's
   "Vani" `ta_IN` voice) via a normal HTML5 `<audio>` element, so it sounds the same and
   works on **every device** (Mac/Windows/iPhone/Android) and offline — no device voice

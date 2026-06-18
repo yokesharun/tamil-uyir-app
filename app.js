@@ -448,7 +448,7 @@ function startApp() {
   setTimeout(() => splash.remove(), 400);
   // iOS unlock: play a clip inside the user gesture so later src swaps are allowed
   try { player.src = "audio/silent.m4a"; const p = player.play(); if (p) p.catch(() => {}); } catch (e) {}
-  if (quizMode) newQuizRound(); else { playing = true; render(); }
+  playing = true; render();
 }
 splash.addEventListener("click", startApp);
 

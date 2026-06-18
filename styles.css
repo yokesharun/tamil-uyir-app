@@ -457,31 +457,6 @@ body.quiz .strip, body.quiz .controls { display: none; }
 }
 .tbtn:active { transform: scale(.9); }
 
-/* ---- audio-availability banner ---- */
-.banner {
-  width: 100%;
-  max-width: 880px;
-  background: var(--peach);
-  color: #a9744f;
-  border-radius: 18px;
-  padding: 10px 16px;
-  margin-bottom: 14px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-size: 14px;
-}
-.banner em { color: #b58a6a; font-style: normal; opacity: .85; }
-.banner[hidden] { display: none; }
-#banner-close {
-  margin-left: auto;
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  font-size: 16px;
-  color: #a9744f;
-}
-
 /* ---- splash / tap to start ---- */
 .splash {
   position: fixed;
