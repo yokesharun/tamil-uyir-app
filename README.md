@@ -30,6 +30,8 @@ and an optional romanization — in an auto-playing slideshow a toddler can just
 - 🟪 **Letter strip** — every letter/number in a row that highlights the current one and
   scrolls / jumps on tap.
 - ✨ **Animations** — gentle per-picture motion plus a sparkle celebration on each card.
+- 📱 **Mobile-app UI** — sticky app-bar (brand + icon controls) and a horizontally
+  scrollable segmented tab bar for the sets.
 - 🧸 **Pastel kawaii** look, fully **responsive** (phone portrait stacks; landscape/tablet
   uses a two-panel card).
 - 📲 **Installable PWA** — works fully offline after the first visit.
@@ -38,7 +40,7 @@ and an optional romanization — in an auto-playing slideshow a toddler can just
 ## Files
 | File | Purpose |
 |------|---------|
-| `index.html` | Menu tabs, mode buttons, card stage, letter strip, splash |
+| `index.html` | Sticky app-bar (brand + icon actions), segmented tab bar, card stage, letter strip, splash |
 | `styles.css` | Pastel theme, layout, responsive rules, animations, quiz/splash |
 | `app.js` | The 4 sets, slideshow + audio logic, quiz, stars, toggles, SW registration |
 | `art.js` | All inline SVG drawings + the `countArt()` helper |
