@@ -1,0 +1,65 @@
+#!/usr/bin/env node
+// Pre-render Tamil audio clips with the macOS "Vani" (ta_IN) voice.
+// Run on macOS:  node tools/gen-audio.mjs
+// Produces audio/<set>-<i>-l.m4a (letter) and -w.m4a (word) + audio/silent.m4a.
+// Keep these lists in sync with SETS in app.js.
+
+import { execFileSync } from "node:child_process";
+import { mkdirSync, rmSync, existsSync } from "node:fs";
+import { fileURLToPath } from "node:url";
+import { dirname, join } from "node:path";
+
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
+const OUT = join(ROOT, "audio");
+const TMP = join(OUT, "_tmp.aiff");
+const VOICE = "Vani";
+
+const SETS = {
+  uyir: [
+    ["அ", "அம்மா"], ["ஆ", "ஆடு"], ["இ", "இலை"], ["ஈ", "ஈ"],
+    ["உ", "உரல்"], ["ஊ", "ஊஞ்சல்"], ["எ", "எலி"], ["ஏ", "ஏணி"],
+    ["ஐ", "ஐஸ்"], ["ஒ", "ஒட்டகம்"], ["ஓ", "ஓடம்"], ["ஔ", "ஔவியம்"],
+  ],
+  mey: [
+    ["க்", "காகம்"], ["ங்", "தங்கம்"], ["ச்", "சங்கு"], ["ஞ்", "ஞாயிறு"],
+    ["ட்", "பட்டம்"], ["ண்", "மண்"], ["த்", "தேங்காய்"], ["ந்", "நண்டு"],
+    ["ப்", "பந்து"], ["ம்", "மரம்"], ["ய்", "யானை"], ["ர்", "ரயில்"],
+    ["ல்", "லட்டு"], ["வ்", "வண்டி"], ["ழ்", "மழை"], ["ள்", "வாள்"],
+    ["ற்", "ஆறு"], ["ன்", "மீன்"],
+  ],
+  // numbers: speak the word for both clips (digit glyph alone is ambiguous)
+  numbers: [
+    ["ஒன்று", "ஒன்று"], ["இரண்டு", "இரண்டு"], ["மூன்று", "மூன்று"], ["நான்கு", "நான்கு"],
+    ["ஐந்து", "ஐந்து"], ["ஆறு", "ஆறு"], ["ஏழு", "ஏழு"], ["எட்டு", "எட்டு"],
+    ["ஒன்பது", "ஒன்பது"], ["பத்து", "பத்து"],
+  ],
+  uyirmey_ka: [
+    ["க", "கதவு"], ["கா", "காகம்"], ["கி", "கிளி"], ["கீ", "கீரை"],
+    ["கு", "குதிரை"], ["கூ", "கூடை"], ["கெ", "கெண்டை"], ["கே", "கேடயம்"],
+    ["கை", "கை"], ["கொ", "கொடி"], ["கோ", "கோழி"], ["கௌ", "கௌவை"],
+  ],
+};
+
+function clip(text, outPath) {
+  execFileSync("say", ["-v", VOICE, "-o", TMP, text]);
+  execFileSync("afconvert", ["-f", "m4af", "-d", "aac", TMP, outPath]);
+}
+
+if (existsSync(OUT)) rmSync(OUT, { recursive: true, force: true });
+mkdirSync(OUT, { recursive: true });
+
+let n = 0;
+for (const [set, items] of Object.entries(SETS)) {
+  items.forEach(([letter, word], i) => {
+    clip(letter, join(OUT, `${set}-${i}-l.m4a`));
+    clip(word, join(OUT, `${set}-${i}-w.m4a`));
+    n += 2;
+  });
+}
+
+// tiny silent clip for the iOS unlock tap
+execFileSync("say", ["-v", VOICE, "-o", TMP, "[[slnc 200]]"]);
+execFileSync("afconvert", ["-f", "m4af", "-d", "aac", TMP, join(OUT, "silent.m4a")]);
+
+rmSync(TMP, { force: true });
+console.log(`Generated ${n + 1} clips in ${OUT}`);

@@ -14,9 +14,10 @@ and an optional romanization — in an auto-playing slideshow a toddler can just
 - 🌸 **Tap-to-start splash** — the first tap unlocks audio (needed on mobile) and begins.
 - 🎞️ **Auto-pilot slideshow** — speaks the letter, pauses ~1s, speaks the word, then moves
   on. The slide never changes mid-speech. Tap / arrows / space to control.
-- 🔊 **Pronunciation** — uses the **Samantha** voice (Web Speech API) for everything.
-  Tap the big letter or the **🔊 மீண்டும்** button to replay. The 🔊 button mutes (remembered).
-  *If a device has no "Samantha" voice, a small note shows and pictures still work.*
+- 🔊 **Pronunciation** — plays **pre-recorded Tamil audio clips** (rendered with macOS's
+  "Vani" `ta_IN` voice) via a normal HTML5 `<audio>` element, so it sounds the same and
+  works on **every device** (Mac/Windows/iPhone/Android) and offline — no device voice
+  needed. Tap the big letter or the **🔊 மீண்டும்** button to replay; 🔊 mutes (remembered).
 - 🎮 **Quiz game** — "find the letter": hear a letter, tap the matching picture out of 3.
   Correct answers earn ⭐ stars (saved between visits).
 - 🔀 **Shuffle** and 🔂 **repeat-one** play modes.
@@ -27,18 +28,25 @@ and an optional romanization — in an auto-playing slideshow a toddler can just
 - 🧸 **Pastel kawaii** look, fully **responsive** (phone portrait stacks; landscape/tablet
   uses a two-panel card).
 - 📲 **Installable PWA** — works fully offline after the first visit.
-- ♿ Honors `prefers-reduced-motion`; pauses speech when the tab is hidden.
+- ♿ Honors `prefers-reduced-motion`; pauses audio when the tab is hidden.
 
 ## Files
 | File | Purpose |
 |------|---------|
-| `index.html` | Menu tabs, mode buttons, card stage, letter strip, splash, banner |
+| `index.html` | Menu tabs, mode buttons, card stage, letter strip, splash |
 | `styles.css` | Pastel theme, layout, responsive rules, animations, quiz/splash |
-| `app.js` | The 4 sets, slideshow + speech logic, quiz, stars, toggles, SW registration |
+| `app.js` | The 4 sets, slideshow + audio logic, quiz, stars, toggles, SW registration |
 | `art.js` | All inline SVG drawings + the `countArt()` helper |
+| `audio/*.m4a` | Pre-recorded Tamil pronunciation clips (letter + word per item) |
+| `tools/gen-audio.mjs` | Regenerates the `audio/` clips (macOS only) |
 | `manifest.json`, `sw.js`, `icon.svg` | PWA install + offline support |
 
-No build step, no frameworks, no external assets.
+No build step, no frameworks. The only "build" is regenerating audio after changing
+letters/words (macOS, has the Vani voice):
+
+```bash
+node tools/gen-audio.mjs   # re-renders all clips into audio/
+```
 
 ## Run locally
 Open `index.html` in a browser, or serve it (needed for the service worker / audio):

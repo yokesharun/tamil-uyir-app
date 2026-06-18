@@ -74,7 +74,6 @@ const shuffleBtn = document.getElementById("shuffle");
 const repeatBtn = document.getElementById("repeat");
 const starsEl = document.getElementById("stars");
 const splash = document.getElementById("splash");
-const banner = document.getElementById("banner");
 const tabs = [...document.querySelectorAll(".tab")];
 
 // ---- state ----
@@ -96,8 +95,6 @@ const SILENT_VIEW = 4500;  // viewing time per card when audio is muted/unavaila
 let muted = localStorage.getItem("muted") === "1";
 let showRoman = localStorage.getItem("roman") !== "0";
 
-const hasSpeech = "speechSynthesis" in window;
-
 // ---- helpers ----
 const artFor = (item) => (item.n ? countArt(item.n) : ART[item.art]);
 const rand = (n) => Math.floor(Math.random() * n);
@@ -107,45 +104,38 @@ function shuffled(arr) {
   return a;
 }
 
-// ---- voice: prefer "Samantha", then any English voice (iOS-safe fallback) ----
-function getVoice() {
-  if (!hasSpeech) return null;
-  const voices = speechSynthesis.getVoices() || [];
-  return (
-    voices.find((v) => /samantha/i.test(v.name)) ||
-    voices.find((v) => /^en[-_]us/i.test(v.lang || "")) ||
-    voices.find((v) => /^en/i.test(v.lang || "")) ||
-    voices[0] ||
-    null
-  );
+// ---- audio: pre-recorded Tamil clips (Vani), played with one reusable element ----
+// Each item carries item.audio = "audio/<set>-<i>"; clips are -l.m4a (letter) and -w.m4a (word).
+const player = new Audio();
+player.preload = "auto";
+
+// Play one clip; resolve when it ends, errors, or times out (so the slideshow never stalls).
+function playClip(src) {
+  return new Promise((resolve) => {
+    let done = false;
+    const finish = () => { if (done) return; done = true; clearTimeout(guard); resolve(); };
+    const guard = setTimeout(finish, 4000);
+    player.onended = finish;
+    player.onerror = finish;
+    try { player.pause(); player.currentTime = 0; player.src = src; player.play().catch(finish); }
+    catch (e) { finish(); }
+  });
 }
 
-// ---- audio (Web Speech): say the letter, pause 1s, then the word ----
+// say the letter, pause ~1s, then the word; calls onDone() when finished.
 function speak(item, onDone) {
   const done = typeof onDone === "function" ? onDone : () => {};
-  if (muted || !hasSpeech) { advanceTimer = setTimeout(done, SILENT_VIEW); return; }
-  const voice = getVoice();
-  const mkU = (text) => {
-    const u = new SpeechSynthesisUtterance(text);
-    // never fall back to a Tamil lang (no iOS voice for it → silence); use English.
-    u.voice = voice || null;
-    u.lang = voice ? voice.lang : "en-US";
-    u.rate = 0.7;
-    return u;
-  };
-  try { speechSynthesis.cancel(); } catch (e) {}
-
-  if (activeSet === "numbers") {
-    const u = mkU(item.w); u.onend = u.onerror = done; speechSynthesis.speak(u); return;
-  }
-  const u1 = mkU(item.l);
-  u1.onerror = done;
-  u1.onend = () => {
-    advanceTimer = setTimeout(() => {       // 1s break, slide stays put
-      const u2 = mkU(item.w); u2.onend = u2.onerror = done; speechSynthesis.speak(u2);
+  if (muted || !item || !item.audio) { advanceTimer = setTimeout(done, SILENT_VIEW); return; }
+  if (item.n) { playClip(item.audio + "-w.m4a").then(done); return; }   // numbers: word only
+  playClip(item.audio + "-l.m4a").then(() => {
+    advanceTimer = setTimeout(() => {                                   // 1s break, slide stays put
+      playClip(item.audio + "-w.m4a").then(done);
     }, GAP);
-  };
-  speechSynthesis.speak(u1);
+  });
+}
+
+function stopAudio() {
+  try { player.pause(); player.onended = null; player.onerror = null; } catch (e) {}
 }
 
 // ---- order ----
@@ -253,7 +243,7 @@ function setPlaying(on) {
   playing = on;
   playBtn.textContent = on ? "⏸" : "▶";
   clearTimeout(advanceTimer);
-  if (hasSpeech) { try { speechSynthesis.cancel(); } catch (e) {} }
+  stopAudio();
   if (on && !quizMode) render();
 }
 
@@ -270,7 +260,7 @@ function setQuiz(on) {
   document.body.classList.toggle("quiz", on);
   quizBtn.classList.toggle("on", on);
   clearTimeout(advanceTimer);
-  if (hasSpeech) { try { speechSynthesis.cancel(); } catch (e) {} }
+  stopAudio();
   if (on) newQuizRound(); else render();
 }
 
@@ -286,19 +276,11 @@ function setMode(next) {
 function applySound() {
   soundBtn.textContent = muted ? "🔇" : "🔊";
   soundBtn.setAttribute("aria-label", muted ? "Unmute" : "Mute");
-  if (muted && hasSpeech) { try { speechSynthesis.cancel(); } catch (e) {} }
+  if (muted) stopAudio();
 }
 function applyRoman() {
   document.body.classList.toggle("show-roman", showRoman);
   romanBtn.classList.toggle("on", showRoman);
-}
-
-// ---- audio-availability banner ----
-function checkVoice() {
-  if (!hasSpeech || localStorage.getItem("voiceBannerOff") === "1") return;
-  const voices = speechSynthesis.getVoices() || [];
-  if (voices.length === 0) return; // not loaded yet; onvoiceschanged will re-fire
-  banner.hidden = !!getVoice(); // hide when the Samantha voice is available
 }
 
 // ---- events ----
@@ -311,7 +293,6 @@ romanBtn.addEventListener("click", () => { showRoman = !showRoman; localStorage.
 quizBtn.addEventListener("click", () => setQuiz(!quizMode));
 shuffleBtn.addEventListener("click", () => setMode("shuffle"));
 repeatBtn.addEventListener("click", () => setMode("repeat"));
-document.getElementById("banner-close").addEventListener("click", () => { banner.hidden = true; localStorage.setItem("voiceBannerOff", "1"); });
 
 // tap the letter to replay; tap elsewhere on the card to advance (learn mode only)
 stage.addEventListener("click", (e) => {
@@ -332,7 +313,7 @@ document.addEventListener("keydown", (e) => {
 document.addEventListener("visibilitychange", () => {
   if (document.hidden) {
     clearTimeout(advanceTimer);
-    if (hasSpeech) { try { speechSynthesis.cancel(); } catch (e) {} }
+    stopAudio();
   } else if (started && playing && !quizMode) {
     render();
   }
@@ -344,30 +325,23 @@ function startApp() {
   started = true;
   splash.classList.add("gone");
   setTimeout(() => splash.remove(), 400);
-  // iOS unlock: must speak inside the user gesture or all later speech stays silent
-  if (hasSpeech) {
-    try {
-      speechSynthesis.cancel();
-      speechSynthesis.resume();
-      const warm = new SpeechSynthesisUtterance(" ");
-      warm.volume = 0;
-      const v = getVoice();
-      if (v) { warm.voice = v; warm.lang = v.lang; }
-      speechSynthesis.speak(warm);
-    } catch (e) {}
-  }
+  // iOS unlock: play a clip inside the user gesture so later src swaps are allowed
+  try { player.src = "audio/silent.m4a"; const p = player.play(); if (p) p.catch(() => {}); } catch (e) {}
   if (quizMode) newQuizRound(); else { playing = true; render(); }
 }
 splash.addEventListener("click", startApp);
 
 // ---- init ----
+// attach the audio clip base path to every item (used by speak + quiz)
+for (const [setName, items] of Object.entries(SETS)) {
+  items.forEach((item, i) => { item.audio = `audio/${setName}-${i}`; });
+}
 applySound();
 applyRoman();
 renderStars();
 buildOrder();
 buildStrip();
 render(false, true);          // show first card quietly behind the splash
-if (hasSpeech) { checkVoice(); speechSynthesis.onvoiceschanged = checkVoice; }
 
 // ---- PWA service worker ----
 if ("serviceWorker" in navigator) {
