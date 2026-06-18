@@ -107,11 +107,17 @@ function shuffled(arr) {
   return a;
 }
 
-// ---- voice: always use "Samantha" when available ----
+// ---- voice: prefer "Samantha", then any English voice (iOS-safe fallback) ----
 function getVoice() {
   if (!hasSpeech) return null;
   const voices = speechSynthesis.getVoices() || [];
-  return voices.find((v) => /samantha/i.test(v.name)) || null;
+  return (
+    voices.find((v) => /samantha/i.test(v.name)) ||
+    voices.find((v) => /^en[-_]us/i.test(v.lang || "")) ||
+    voices.find((v) => /^en/i.test(v.lang || "")) ||
+    voices[0] ||
+    null
+  );
 }
 
 // ---- audio (Web Speech): say the letter, pause 1s, then the word ----
@@ -121,8 +127,10 @@ function speak(item, onDone) {
   const voice = getVoice();
   const mkU = (text) => {
     const u = new SpeechSynthesisUtterance(text);
-    if (voice) { u.voice = voice; u.lang = voice.lang; } else { u.lang = "ta-IN"; }
-    u.rate = 0.65;
+    // never fall back to a Tamil lang (no iOS voice for it → silence); use English.
+    u.voice = voice || null;
+    u.lang = voice ? voice.lang : "en-US";
+    u.rate = 0.7;
     return u;
   };
   try { speechSynthesis.cancel(); } catch (e) {}
@@ -336,7 +344,18 @@ function startApp() {
   started = true;
   splash.classList.add("gone");
   setTimeout(() => splash.remove(), 400);
-  if (hasSpeech) { try { speechSynthesis.resume(); } catch (e) {} } // unlock on gesture
+  // iOS unlock: must speak inside the user gesture or all later speech stays silent
+  if (hasSpeech) {
+    try {
+      speechSynthesis.cancel();
+      speechSynthesis.resume();
+      const warm = new SpeechSynthesisUtterance(" ");
+      warm.volume = 0;
+      const v = getVoice();
+      if (v) { warm.voice = v; warm.lang = v.lang; }
+      speechSynthesis.speak(warm);
+    } catch (e) {}
+  }
   if (quizMode) newQuizRound(); else { playing = true; render(); }
 }
 splash.addEventListener("click", startApp);
