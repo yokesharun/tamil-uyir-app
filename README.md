@@ -18,8 +18,13 @@ and an optional romanization — in an auto-playing slideshow a toddler can just
   "Vani" `ta_IN` voice) via a normal HTML5 `<audio>` element, so it sounds the same and
   works on **every device** (Mac/Windows/iPhone/Android) and offline — no device voice
   needed. Tap the big letter or the **🔊 மீண்டும்** button to replay; 🔊 mutes (remembered).
-- 🎮 **Quiz game** — "find the letter": hear a letter, tap the matching picture out of 3.
-  Correct answers earn ⭐ stars (saved between visits).
+- 🎮 **Games** (🎮 button → picker, all on the 12 vowels, **no repeated questions** per
+  round):
+  - **🔎 Find the Letter** — see a letter, tap the matching picture (of 3).
+  - **👂 Listen & Tap** — hear a letter, tap the letter you heard (of 3).
+  - **✏️ Trace** — guided stroke-order: a dot animates along the strokes over a faint
+    glyph; draw over it with finger/mouse; 🔊 hear, ▶ show strokes, 🧹 clear, ➡️ next.
+  Correct answers / finished traces earn ⭐ stars (saved between visits).
 - 🔀 **Shuffle** and 🔂 **repeat-one** play modes.
 - 🔤 **Romanization toggle** — show/hide roman text (`a`, `k`, `ondru`…) with **ABC**.
 - 🟪 **Letter strip** — every letter/number in a row that highlights the current one and

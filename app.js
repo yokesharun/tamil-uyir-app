@@ -203,35 +203,164 @@ function go(step) {
   render(step > 0 && pos === 0 && prevPos === order.length - 1);
 }
 
-// ---- quiz mode ----
-function newQuizRound() {
-  clearTimeout(advanceTimer);
-  const targetI = rand(letters.length);
-  const target = letters[targetI];
-  const pool = letters.map((_, i) => i).filter((i) => i !== targetI);
-  const distract = shuffled(pool).slice(0, 2);
-  const choiceItems = shuffled([targetI, ...distract]).map((i) => letters[i]);
+// ---- games (always on the 12 vowels) ----
+const GAME_SET = SETS.uyir;
+let gameMode = null;        // 'find' | 'listen' | 'trace' | null
+let gameQueue = [];
+let served = 0;
+let traceRAF = null, ctx = null, drawing = false, drewSomething = false;
+
+function refillQueue() { gameQueue = shuffled(GAME_SET.map((_, i) => i)); served = 0; }
+function nextIndex() { if (!gameQueue.length) refillQueue(); return gameQueue.shift(); }
+
+function gameToolbar() { return `<div class="game-toolbar"><button class="game-back">← விளையாட்டு</button></div>`; }
+function bindToolbar() {
+  const b = stage.querySelector(".game-back");
+  if (b) b.addEventListener("click", (e) => { e.stopPropagation(); openGames(); });
+}
+
+function openGames() {
+  gameMode = null; quizMode = true;
+  document.body.classList.add("quiz"); quizBtn.classList.add("on");
+  clearTimeout(advanceTimer); stopAudio(); stopTrace();
   stage.innerHTML = `
-    <div class="quiz">
-      <div class="quiz-q">இது எது? <span class="quiz-target" lang="ta">${target.l}</span></div>
-      <div class="quiz-choices">
-        ${choiceItems.map((c) => `<button class="choice" data-correct="${c === target ? 1 : 0}">${artFor(c)}</button>`).join("")}
+    <div class="games">
+      <div class="games-title">விளையாட்டு 🎮</div>
+      <div class="games-grid">
+        <button class="game-pick" data-game="find">🔎<span>எழுத்தை கண்டுபிடி</span><em>Find the Letter</em></button>
+        <button class="game-pick" data-game="listen">👂<span>கேட்டு தட்டு</span><em>Listen &amp; Tap</em></button>
+        <button class="game-pick" data-game="trace">✏️<span>எழுது</span><em>Trace</em></button>
       </div>
+      <button class="game-back2">← திரும்பு</button>
     </div>`;
-  stage.querySelectorAll(".choice").forEach((btn) => {
+  stage.querySelectorAll(".game-pick").forEach((b) =>
+    b.addEventListener("click", (e) => { e.stopPropagation(); startGame(b.dataset.game); }));
+  stage.querySelector(".game-back2").addEventListener("click", (e) => { e.stopPropagation(); exitGames(); });
+}
+
+function exitGames() {
+  gameMode = null; quizMode = false;
+  document.body.classList.remove("quiz"); quizBtn.classList.remove("on");
+  clearTimeout(advanceTimer); stopAudio(); stopTrace();
+  render();
+}
+
+function startGame(kind) { gameMode = kind; refillQueue(); kind === "trace" ? traceRound() : quizRound(); }
+
+function roundComplete() {
+  stage.innerHTML = `<div class="quiz done">
+    <div class="cheer-big">🎉</div>
+    <div class="quiz-q">அருமை! எல்லாம் முடிந்தது</div>
+    <button class="again">↻ மீண்டும்</button>${gameToolbar()}</div>`;
+  stage.querySelector(".again").addEventListener("click", (e) => {
+    e.stopPropagation(); refillQueue(); gameMode === "trace" ? traceRound() : quizRound();
+  });
+  bindToolbar();
+}
+
+function wireChoices(onCorrect) {
+  stage.querySelectorAll(".choice").forEach((btn) =>
     btn.addEventListener("click", (e) => {
       e.stopPropagation();
-      if (btn.dataset.correct === "1") {
-        btn.classList.add("right");
-        addStar();
-        setTimeout(newQuizRound, 1100);
-      } else {
-        btn.classList.add("wrong");
-        setTimeout(() => btn.classList.remove("wrong"), 500);
-      }
-    });
-  });
+      if (btn.dataset.ok === "1") { btn.classList.add("right"); onCorrect(); }
+      else { btn.classList.add("wrong"); setTimeout(() => btn.classList.remove("wrong"), 500); }
+    }));
+}
+
+// Find the Letter + Listen & Tap
+function quizRound() {
+  clearTimeout(advanceTimer); stopAudio();
+  if (served >= GAME_SET.length) { roundComplete(); return; }
+  const targetI = nextIndex(); served++;
+  const target = GAME_SET[targetI];
+  const distract = shuffled(GAME_SET.map((_, k) => k).filter((k) => k !== targetI)).slice(0, 2);
+  const choices = shuffled([targetI, ...distract]);
+
+  if (gameMode === "find") {
+    stage.innerHTML = `<div class="quiz">
+      <div class="quiz-q">இது எது? <span class="quiz-target" lang="ta">${target.l}</span></div>
+      <div class="quiz-choices">
+        ${choices.map((k) => `<button class="choice" data-ok="${k === targetI ? 1 : 0}">${artFor(GAME_SET[k])}</button>`).join("")}
+      </div>${gameToolbar()}</div>`;
+  } else {
+    stage.innerHTML = `<div class="quiz">
+      <div class="quiz-q">கேட்டு தட்டு <button class="mini-say" aria-label="play">🔊</button></div>
+      <div class="quiz-choices letters">
+        ${choices.map((k) => `<button class="choice letter-choice" data-ok="${k === targetI ? 1 : 0}" lang="ta">${GAME_SET[k].l}</button>`).join("")}
+      </div>${gameToolbar()}</div>`;
+    stage.querySelector(".mini-say").addEventListener("click", (e) => { e.stopPropagation(); speak(target); });
+  }
+  wireChoices(() => { addStar(); setTimeout(quizRound, 1000); });
+  bindToolbar();
   speak(target);
+}
+
+// Guided stroke-order tracing
+function stopTrace() { if (traceRAF) cancelAnimationFrame(traceRAF); traceRAF = null; drawing = false; }
+
+function traceRound() {
+  clearTimeout(advanceTimer); stopAudio(); stopTrace();
+  if (served >= GAME_SET.length) { roundComplete(); return; }
+  const targetI = nextIndex(); served++;
+  const target = GAME_SET[targetI];
+  const strokes = (typeof TRACE !== "undefined" && TRACE[target.l]) || [];
+  stage.innerHTML = `<div class="trace">
+    <div class="trace-stage">
+      <svg class="trace-guide" viewBox="0 0 200 200" aria-hidden="true">
+        <text x="100" y="158" text-anchor="middle" class="trace-glyph" lang="ta">${target.l}</text>
+        ${strokes.map((d, si) => `<path class="trace-path" data-i="${si}" d="${d}" />`).join("")}
+        <circle class="trace-dot" r="8" cx="-20" cy="-20" />
+      </svg>
+      <canvas class="trace-canvas" width="360" height="360"></canvas>
+    </div>
+    <div class="trace-bar">
+      <button class="tbtn t-hear" aria-label="hear">🔊</button>
+      <button class="tbtn t-show" aria-label="show strokes">▶</button>
+      <button class="tbtn t-clear" aria-label="clear">🧹</button>
+      <button class="tbtn t-next" aria-label="next">➡️</button>
+    </div>${gameToolbar()}</div>`;
+  setupCanvas();
+  animateGuide();
+  stage.querySelector(".t-hear").addEventListener("click", (e) => { e.stopPropagation(); speak(target); });
+  stage.querySelector(".t-show").addEventListener("click", (e) => { e.stopPropagation(); animateGuide(); });
+  stage.querySelector(".t-clear").addEventListener("click", (e) => { e.stopPropagation(); clearCanvas(); });
+  stage.querySelector(".t-next").addEventListener("click", (e) => {
+    e.stopPropagation(); if (drewSomething) addStar(); stopTrace(); setTimeout(traceRound, 250);
+  });
+  bindToolbar();
+  speak(target);
+}
+
+function setupCanvas() {
+  const c = stage.querySelector(".trace-canvas");
+  if (!c) return;
+  ctx = c.getContext("2d");
+  drewSomething = false;
+  ctx.lineWidth = 16; ctx.lineCap = "round"; ctx.lineJoin = "round"; ctx.strokeStyle = "#ff9ec4";
+  const at = (ev) => { const r = c.getBoundingClientRect(); return { x: (ev.clientX - r.left) * c.width / r.width, y: (ev.clientY - r.top) * c.height / r.height }; };
+  c.addEventListener("pointerdown", (ev) => { drawing = true; drewSomething = true; const p = at(ev); ctx.beginPath(); ctx.moveTo(p.x, p.y); ev.preventDefault(); });
+  c.addEventListener("pointermove", (ev) => { if (!drawing) return; const p = at(ev); ctx.lineTo(p.x, p.y); ctx.stroke(); ev.preventDefault(); });
+  c.addEventListener("pointerup", () => { drawing = false; });
+  c.addEventListener("pointercancel", () => { drawing = false; });
+  c.addEventListener("pointerleave", () => { drawing = false; });
+}
+function clearCanvas() { const c = stage.querySelector(".trace-canvas"); if (c && ctx) ctx.clearRect(0, 0, c.width, c.height); drewSomething = false; }
+
+function animateGuide() {
+  stopTrace();
+  const paths = [...stage.querySelectorAll(".trace-path")];
+  const dot = stage.querySelector(".trace-dot");
+  if (!paths.length || !dot) return;
+  let si = 0, t = 0;
+  const step = () => {
+    const path = paths[si]; const len = path.getTotalLength();
+    const pt = path.getPointAtLength(Math.min(t, len));
+    dot.setAttribute("cx", pt.x); dot.setAttribute("cy", pt.y);
+    t += 1.8;
+    if (t >= len + 12) { t = 0; si = (si + 1) % paths.length; }
+    traceRAF = requestAnimationFrame(step);
+  };
+  step();
 }
 
 // ---- stars ----
@@ -248,20 +377,12 @@ function setPlaying(on) {
 }
 
 function switchSet(name) {
+  if (quizMode) { gameMode = null; quizMode = false; document.body.classList.remove("quiz"); quizBtn.classList.remove("on"); stopTrace(); stopAudio(); }
   activeSet = name;
   letters = SETS[name];
   tabs.forEach((t) => t.classList.toggle("active", t.dataset.set === name));
   buildOrder(); buildStrip();
-  if (quizMode) newQuizRound(); else render();
-}
-
-function setQuiz(on) {
-  quizMode = on;
-  document.body.classList.toggle("quiz", on);
-  quizBtn.classList.toggle("on", on);
-  clearTimeout(advanceTimer);
-  stopAudio();
-  if (on) newQuizRound(); else render();
+  render();
 }
 
 function setMode(next) {
@@ -286,11 +407,11 @@ function applyRoman() {
 // ---- events ----
 tabs.forEach((t) => t.addEventListener("click", () => switchSet(t.dataset.set)));
 playBtn.addEventListener("click", () => setPlaying(!playing));
-document.getElementById("next").addEventListener("click", () => (quizMode ? newQuizRound() : go(1)));
-document.getElementById("prev").addEventListener("click", () => (quizMode ? newQuizRound() : go(-1)));
+document.getElementById("next").addEventListener("click", () => { if (!quizMode) go(1); });
+document.getElementById("prev").addEventListener("click", () => { if (!quizMode) go(-1); });
 soundBtn.addEventListener("click", () => { muted = !muted; localStorage.setItem("muted", muted ? "1" : "0"); applySound(); if (!quizMode) render(); });
 romanBtn.addEventListener("click", () => { showRoman = !showRoman; localStorage.setItem("roman", showRoman ? "1" : "0"); applyRoman(); });
-quizBtn.addEventListener("click", () => setQuiz(!quizMode));
+quizBtn.addEventListener("click", () => (quizMode ? exitGames() : openGames()));
 shuffleBtn.addEventListener("click", () => setMode("shuffle"));
 repeatBtn.addEventListener("click", () => setMode("repeat"));
 
