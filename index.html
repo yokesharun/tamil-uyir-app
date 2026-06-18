@@ -11,25 +11,26 @@
   <link rel="icon" href="icon.svg" type="image/svg+xml" />
   <link rel="apple-touch-icon" href="icon.svg" />
   <link rel="manifest" href="manifest.json" />
-  <link rel="stylesheet" href="styles.css?v=14" />
+  <link rel="stylesheet" href="styles.css?v=15" />
 </head>
 <body>
-  <nav class="menu">
-    <span class="logo">🌸</span>
-    <div class="tabs">
-      <button class="tab active" data-set="uyir">உயிர் எழுத்துக்கள்</button>
-      <button class="tab" data-set="mey">மெய் எழுத்துக்கள்</button>
-      <button class="tab" data-set="numbers">எண்கள்</button>
-      <button class="tab" data-set="uyirmey_ka">உயிர்மெய் (க)</button>
-    </div>
-    <div class="toggles">
+  <header class="appbar">
+    <div class="brand"><span class="logo">🌸</span><span class="brand-name">தமிழ்</span></div>
+    <div class="actions">
       <span id="stars" class="stars" title="Stars earned">⭐ 0</span>
-      <button id="quiz" class="toggle" aria-label="Quiz game">🎮</button>
-      <button id="shuffle" class="toggle" aria-label="Shuffle order">🔀</button>
-      <button id="repeat" class="toggle" aria-label="Repeat one">🔂</button>
-      <button id="roman" class="toggle on" aria-label="Toggle romanization">ABC</button>
-      <button id="sound" class="toggle" aria-label="Mute">🔊</button>
+      <button id="quiz" class="iconbtn" aria-label="Games">🎮</button>
+      <button id="shuffle" class="iconbtn" aria-label="Shuffle order">🔀</button>
+      <button id="repeat" class="iconbtn" aria-label="Repeat one">🔂</button>
+      <button id="roman" class="iconbtn on" aria-label="Toggle romanization">ABC</button>
+      <button id="sound" class="iconbtn" aria-label="Mute">🔊</button>
     </div>
+  </header>
+
+  <nav class="tabbar">
+    <button class="tab active" data-set="uyir">உயிர்</button>
+    <button class="tab" data-set="mey">மெய்</button>
+    <button class="tab" data-set="numbers">எண்கள்</button>
+    <button class="tab" data-set="uyirmey_ka">உயிர்மெய் (க)</button>
   </nav>
 
   <main id="stage" class="stage"><!-- card / quiz injected by app.js --></main>
@@ -50,7 +51,7 @@
     </div>
   </div>
 
-  <script src="art.js?v=14"></script>
-  <script src="app.js?v=14"></script>
+  <script src="art.js?v=15"></script>
+  <script src="app.js?v=15"></script>
 </body>
 </html>
