@@ -22,8 +22,9 @@ and an optional romanization — in an auto-playing slideshow a toddler can just
   round):
   - **🔎 Find the Letter** — see a letter, tap the matching picture (of 3).
   - **👂 Listen & Tap** — hear a letter, tap the letter you heard (of 3).
-  - **✏️ Trace** — guided stroke-order: a dot animates along the strokes over a faint
-    glyph; draw over it with finger/mouse; 🔊 hear, ▶ show strokes, 🧹 clear, ➡️ next.
+    - **✏️ Trace** — the real letter outline (exact Tamil Sangam MN glyph) shown as a
+      light fill + dashed guide with a dot that animates along it; draw over it with
+      finger/mouse; 🔊 hear, ▶ replay guide, 🧹 clear, ➡️ next.
   Correct answers / finished traces earn ⭐ stars (saved between visits).
 - 🔀 **Shuffle** and 🔂 **repeat-one** play modes.
 - 🔤 **Romanization toggle** — show/hide roman text (`a`, `k`, `ondru`…) with **ABC**.
@@ -45,7 +46,9 @@ and an optional romanization — in an auto-playing slideshow a toddler can just
 | `app.js` | The 4 sets, slideshow + audio logic, quiz, stars, toggles, SW registration |
 | `art.js` | All inline SVG drawings + the `countArt()` helper |
 | `audio/*.m4a` | Pre-recorded Tamil pronunciation clips (letter + word per item) |
+| `trace-paths.js` | Exact vowel outlines for tracing (generated from Tamil Sangam MN) |
 | `tools/gen-audio.mjs` | Regenerates the `audio/` clips (macOS only) |
+| `tools/gen-trace.mjs` | Regenerates `trace-paths.js` outlines via fontkit (macOS only) |
 | `manifest.json`, `sw.js`, `icon.svg` | PWA install + offline support |
 
 No build step, no frameworks. The only "build" is regenerating audio after changing
@@ -53,6 +56,7 @@ letters/words (macOS, has the Vani voice):
 
 ```bash
 node tools/gen-audio.mjs   # re-renders all clips into audio/
+npm i fontkit && node tools/gen-trace.mjs   # re-renders vowel outlines into trace-paths.js
 ```
 
 ## Run locally

@@ -303,13 +303,13 @@ function traceRound() {
   if (served >= GAME_SET.length) { roundComplete(); return; }
   const targetI = nextIndex(); served++;
   const target = GAME_SET[targetI];
-  const strokes = (typeof TRACE !== "undefined" && TRACE[target.l]) || [];
+  const d = (typeof TRACE !== "undefined" && TRACE[target.l]) || "";
   stage.innerHTML = `<div class="trace">
     <div class="trace-stage">
       <svg class="trace-guide" viewBox="0 0 200 200" aria-hidden="true">
-        <text x="100" y="158" text-anchor="middle" class="trace-glyph" lang="ta">${target.l}</text>
-        ${strokes.map((d, si) => `<path class="trace-path" data-i="${si}" d="${d}" />`).join("")}
-        <circle class="trace-dot" r="8" cx="-20" cy="-20" />
+        <path class="trace-fill" d="${d}" />
+        <path class="trace-outline" d="${d}" />
+        <circle class="trace-dot" r="7" cx="-20" cy="-20" />
       </svg>
       <canvas class="trace-canvas" width="360" height="360"></canvas>
     </div>
@@ -348,16 +348,16 @@ function clearCanvas() { const c = stage.querySelector(".trace-canvas"); if (c &
 
 function animateGuide() {
   stopTrace();
-  const paths = [...stage.querySelectorAll(".trace-path")];
+  const path = stage.querySelector(".trace-outline");
   const dot = stage.querySelector(".trace-dot");
-  if (!paths.length || !dot) return;
-  let si = 0, t = 0;
+  if (!path || !dot) return;
+  const len = path.getTotalLength();
+  let t = 0;
   const step = () => {
-    const path = paths[si]; const len = path.getTotalLength();
     const pt = path.getPointAtLength(Math.min(t, len));
     dot.setAttribute("cx", pt.x); dot.setAttribute("cy", pt.y);
-    t += 1.8;
-    if (t >= len + 12) { t = 0; si = (si + 1) % paths.length; }
+    t += Math.max(2, len / 220);            // ~constant duration regardless of glyph size
+    if (t >= len + 16) t = 0;               // loop
     traceRAF = requestAnimationFrame(step);
   };
   step();
