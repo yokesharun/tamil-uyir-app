@@ -1,12 +1,13 @@
 // Tiny cache-first service worker for offline use on tablets/phones.
-const CACHE = "tamil-kids-v16";
+const CACHE = "tamil-kids-v17";
 const ASSETS = [
   ".",
   "index.html",
-  "styles.css?v=16",
-  "trace-paths.js?v=16",
-  "art.js?v=16",
-  "app.js?v=16",
+  "styles.css?v=17",
+  "trace-paths.js?v=17",
+  "content.js?v=17",
+  "art.js?v=17",
+  "app.js?v=17",
   "manifest.json",
   "icon.svg",
 ];

@@ -235,6 +235,175 @@ const ART = {
     <circle cx="130" cy="88" r="3.5" fill="${P.dark}"/>
     <path d="M60 118 Q40 120 50 140 Q40 142 58 156" fill="#fbeede"/>
     <rect x="88" y="156" width="7" height="16" rx="3" fill="${P.orange}"/><rect x="108" y="156" width="7" height="16" rx="3" fill="${P.orange}"/>`, "bob"),
+
+  // ---- rhymes & stories ----
+  heart: svg(`<path d="M100 160 Q40 120 40 80 Q40 50 70 50 Q90 50 100 70 Q110 50 130 50 Q160 50 160 80 Q160 120 100 160 Z" fill="${P.pink2}"/>
+    <ellipse cx="80" cy="78" rx="12" ry="8" fill="#fff" opacity=".5"/>`, "pulse"),
+  gift: svg(`<rect x="55" y="90" width="90" height="70" rx="8" fill="${P.lilac}"/>
+    <rect x="92" y="90" width="16" height="70" fill="${P.pink2}"/>
+    <rect x="55" y="80" width="90" height="20" rx="6" fill="${P.pink}"/>
+    <path d="M100 80 Q80 50 60 70 M100 80 Q120 50 140 70" stroke="${P.pink2}" stroke-width="5" fill="none" stroke-linecap="round"/>`, "bob"),
+  star_big: svg(`<polygon points="100,30 112,72 158,72 122,100 134,142 100,116 66,142 78,100 42,72 88,72" fill="${P.yellow}" stroke="#f0d36a" stroke-width="2"/>
+    ${eyes(92,108,90)}<path d="M90 102 q10 8 20 0" stroke="${P.dark}" stroke-width="2.5" fill="none" stroke-linecap="round"/>`, "pulse"),
+  book: svg(`<rect x="50" y="50" width="100" height="110" rx="6" fill="${P.blue2}"/>
+    <rect x="55" y="55" width="90" height="100" rx="4" fill="#fff"/>
+    <rect x="96" y="50" width="8" height="110" fill="${P.blue}"/>
+    <line x1="68" y1="80" x2="90" y2="80" stroke="${P.lilac}" stroke-width="3"/><line x1="68" y1="95" x2="90" y2="95" stroke="${P.lilac}" stroke-width="3"/>
+    <line x1="110" y1="80" x2="132" y2="80" stroke="${P.lilac}" stroke-width="3"/><line x1="110" y1="95" x2="132" y2="95" stroke="${P.lilac}" stroke-width="3"/>`, "wiggle"),
+  share_food: svg(`<ellipse cx="100" cy="130" rx="50" ry="16" fill="${P.brown}"/>
+    <ellipse cx="100" cy="124" rx="48" ry="14" fill="${P.orange}"/>
+    <circle cx="80" cy="110" r="14" fill="${P.yellow}"/><circle cx="106" cy="108" r="12" fill="${P.pink}"/><circle cx="120" cy="116" r="10" fill="${P.green2}"/>
+    <path d="M72 96 Q56 70 80 78 M128 100 Q148 74 124 80" stroke="#f6d9c0" stroke-width="8" fill="none" stroke-linecap="round"/>`, "bob"),
+  friends: svg(`<circle cx="70" cy="90" r="24" fill="#f6d9c0"/>
+    ${eyes(62,78,86)}
+    <circle cx="58" cy="96" r="5" fill="${P.cheek}"/><circle cx="82" cy="96" r="5" fill="${P.cheek}"/>
+    <path d="M62 102 q8 8 16 0" stroke="${P.dark}" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <circle cx="130" cy="90" r="24" fill="#f6d9c0"/>
+    <g class="blink"><circle cx="122" cy="86" r="4" fill="${P.dark}"/><circle cx="138" cy="86" r="4" fill="${P.dark}"/></g>
+    <circle cx="118" cy="96" r="5" fill="${P.cheek}"/><circle cx="142" cy="96" r="5" fill="${P.cheek}"/>
+    <path d="M122 102 q8 8 16 0" stroke="${P.dark}" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <path d="M80 140 Q100 120 120 140" stroke="${P.pink2}" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <path d="M56 115 Q56 165 70 165 L70 115 Z" fill="${P.pink}"/><path d="M130 115 Q144 115 144 165 L130 165 Z" fill="${P.blue}"/>`, "bob"),
+  peacock: svg(`<path d="M100 40 Q40 60 40 120 Q100 90 160 120 Q160 60 100 40 Z" fill="${P.blue2}"/>
+    <circle cx="70" cy="80" r="8" fill="${P.green2}"/><circle cx="100" cy="70" r="8" fill="${P.blue}"/><circle cx="130" cy="80" r="8" fill="${P.lilac}"/>
+    <circle cx="70" cy="80" r="4" fill="${P.dark}"/><circle cx="100" cy="70" r="4" fill="${P.dark}"/><circle cx="130" cy="80" r="4" fill="${P.dark}"/>
+    <ellipse cx="100" cy="135" rx="20" ry="28" fill="${P.blue}"/>
+    ${eyes(94,106,128)}<path d="M92 138 q8 6 16 0" stroke="${P.dark}" stroke-width="2" fill="none"/>
+    <path d="M100 108 L96 100 L104 100 Z" fill="${P.orange}"/>`, "bob"),
+  dancer: svg(`<circle cx="100" cy="60" r="22" fill="#f6d9c0"/>
+    ${eyes(92,108,56)}
+    <circle cx="84" cy="64" r="5" fill="${P.cheek}"/><circle cx="116" cy="64" r="5" fill="${P.cheek}"/>
+    <path d="M92 68 q8 8 16 0" stroke="${P.dark}" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <path d="M80 82 Q100 76 120 82 L125 140 Q100 150 75 140 Z" fill="${P.pink2}"/>
+    <path d="M75 140 L60 170 M125 140 L140 170" stroke="${P.pink2}" stroke-width="8" stroke-linecap="round"/>
+    <path d="M80 100 L50 90 M120 100 L150 90" stroke="#f6d9c0" stroke-width="6" stroke-linecap="round"/>`, "swing"),
+  baby: svg(`<circle cx="100" cy="80" r="30" fill="#f6d9c0"/>
+    ${eyes(90,110,76)}
+    <circle cx="80" cy="86" r="6" fill="${P.cheek}"/><circle cx="120" cy="86" r="6" fill="${P.cheek}"/>
+    <path d="M92 92 q8 8 16 0" stroke="${P.dark}" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <path d="M72 105 Q100 100 128 105 L128 160 Q100 168 72 160 Z" fill="${P.yellow}"/>
+    <circle cx="100" cy="52" r="5" fill="${P.pink}"/>`, "bob"),
+  moon: svg(`<path d="M120 40 Q80 40 65 80 Q50 120 80 150 Q110 180 140 150 Q170 120 155 80 Q145 50 120 40 Z" fill="${P.yellow}"/>
+    <circle cx="140" cy="60" r="40" fill="#e8def8"/>
+    ${eyes(95,115,95)}
+    <circle cx="82" cy="105" r="7" fill="${P.cheek}"/><circle cx="126" cy="105" r="7" fill="${P.cheek}"/>
+    <path d="M92 112 q10 8 20 0" stroke="${P.dark}" stroke-width="2.5" fill="none" stroke-linecap="round"/>`, "bob"),
+  runner: svg(`<circle cx="100" cy="55" r="20" fill="#f6d9c0"/>
+    ${eyes(93,107,52)}
+    <path d="M95 62 q5 5 10 0" stroke="${P.dark}" stroke-width="2" fill="none"/>
+    <path d="M86 74 Q100 70 114 74 L118 120 Q100 126 82 120 Z" fill="${P.blue2}"/>
+    <path d="M82 120 L68 155 M118 120 L135 155" stroke="${P.blue2}" stroke-width="8" stroke-linecap="round"/>
+    <path d="M88 90 L60 80 M112 90 L140 100" stroke="#f6d9c0" stroke-width="5" stroke-linecap="round"/>`, "bob"),
+  flower: svg(`<g class="spin-slow">${[0,60,120,180,240,300].map(a => `<ellipse cx="100" cy="66" rx="14" ry="22" fill="${P.pink}" transform="rotate(${a} 100 100)"/>`).join("")}</g>
+    <circle cx="100" cy="100" r="16" fill="${P.yellow}"/>
+    ${eyes(95,105,98)}`, ""),
+  garland: svg(`<path d="M30 80 Q65 120 100 80 Q135 120 170 80" stroke="${P.green2}" stroke-width="4" fill="none"/>
+    <circle cx="50" cy="95" r="8" fill="${P.pink}"/><circle cx="75" cy="105" r="8" fill="${P.yellow}"/><circle cx="100" cy="95" r="8" fill="${P.pink}"/>
+    <circle cx="125" cy="105" r="8" fill="${P.yellow}"/><circle cx="150" cy="95" r="8" fill="${P.pink}"/>
+    <path d="M30 120 Q65 160 100 120 Q135 160 170 120" stroke="${P.green2}" stroke-width="4" fill="none"/>
+    <circle cx="50" cy="135" r="8" fill="${P.yellow}"/><circle cx="75" cy="145" r="8" fill="${P.pink}"/><circle cx="100" cy="135" r="8" fill="${P.yellow}"/>
+    <circle cx="125" cy="145" r="8" fill="${P.pink}"/><circle cx="150" cy="135" r="8" fill="${P.yellow}"/>`, "bob"),
+  crow_vadai: svg(`<ellipse cx="90" cy="110" rx="36" ry="28" fill="${P.grey2}"/>
+    <circle cx="118" cy="88" r="18" fill="${P.grey2}"/>
+    <path d="M134 86 L156 82 L136 94 Z" fill="${P.orange}"/>
+    <circle cx="120" cy="84" r="3.5" fill="${P.dark}"/>
+    <circle cx="80" cy="150" r="16" fill="${P.brown}" stroke="${P.brown2}" stroke-width="3"/>
+    <circle cx="80" cy="150" r="6" fill="#fff6ef"/>`, "bob"),
+  crow_tree: svg(`<rect x="92" y="100" width="16" height="80" rx="5" fill="${P.brown2}"/>
+    <circle cx="100" cy="70" r="38" fill="${P.green2}"/>
+    <ellipse cx="80" cy="62" rx="28" ry="22" fill="${P.green}"/>
+    <circle cx="100" cy="48" r="14" fill="${P.grey2}"/>
+    <circle cx="108" cy="44" r="3" fill="${P.dark}"/>
+    <path d="M112 46 L122 44 L114 50 Z" fill="${P.orange}"/>`, "wiggle"),
+  fox: svg(`<ellipse cx="100" cy="125" rx="36" ry="30" fill="${P.orange}"/>
+    <circle cx="100" cy="82" r="28" fill="${P.orange}"/>
+    <path d="M76 60 L68 30 L88 56 Z" fill="${P.orange}"/><path d="M124 60 L132 30 L112 56 Z" fill="${P.orange}"/>
+    <path d="M76 60 L72 38 L86 56 Z" fill="${P.pink}"/><path d="M124 60 L128 38 L114 56 Z" fill="${P.pink}"/>
+    ${eyes(90,110,78)}
+    <path d="M96 92 L100 98 L104 92" stroke="${P.dark}" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <circle cx="82" cy="90" r="6" fill="${P.cheek}"/><circle cx="118" cy="90" r="6" fill="${P.cheek}"/>
+    <path d="M64 130 Q50 148 66 158" stroke="${P.orange}" stroke-width="10" fill="none" stroke-linecap="round"/>`, "bob"),
+  fox_talk: svg(`<ellipse cx="90" cy="125" rx="34" ry="28" fill="${P.orange}"/>
+    <circle cx="90" cy="85" r="26" fill="${P.orange}"/>
+    <path d="M68 64 L62 38 L80 60 Z" fill="${P.orange}"/><path d="M112 64 L118 38 L100 60 Z" fill="${P.orange}"/>
+    ${eyes(82,98,80)}
+    <path d="M86 94 q4 6 8 0" stroke="${P.dark}" stroke-width="2" fill="none"/>
+    <rect x="120" y="60" width="56" height="34" rx="10" fill="#fff"/>
+    <text x="148" y="82" font-size="14" text-anchor="middle" fill="${P.dark}">🎵 பாடு!</text>`, "wiggle"),
+  crow_sing: svg(`<ellipse cx="100" cy="115" rx="38" ry="30" fill="${P.grey2}"/>
+    <circle cx="126" cy="88" r="20" fill="${P.grey2}"/>
+    <path d="M144 82 L168 76 L146 94 Z" fill="${P.orange}"/>
+    <path d="M138 90 L152 96 L140 98 Z" fill="${P.orange}"/>
+    <circle cx="128" cy="84" r="4" fill="${P.dark}"/>
+    <text x="160" y="70" font-size="20">🎵</text>`, "wiggle"),
+  vadai_fall: svg(`<circle cx="100" cy="60" r="16" fill="${P.grey2}"/>
+    <circle cx="104" cy="56" r="3" fill="${P.dark}"/>
+    <path d="M114 58 L126 56 L116 62 Z" fill="${P.orange}"/>
+    <circle cx="100" cy="140" r="20" fill="${P.brown}" stroke="${P.brown2}" stroke-width="3"/>
+    <circle cx="100" cy="140" r="8" fill="#fff6ef"/>
+    <path d="M100 80 L100 116" stroke="${P.brown2}" stroke-width="3" stroke-dasharray="6 4"/>
+    <text x="120" y="120" font-size="16">😱</text>`, "bob"),
+  fox_run: svg(`<ellipse cx="100" cy="110" rx="40" ry="30" fill="${P.orange}"/>
+    <circle cx="130" cy="82" r="22" fill="${P.orange}"/>
+    <path d="M148 80 L168 76 L150 90 Z" fill="${P.orange}"/>
+    ${eyes(124,138,78)}
+    <circle cx="130" cy="100" r="12" fill="${P.brown}" stroke="${P.brown2}" stroke-width="2"/>
+    <circle cx="130" cy="100" r="4" fill="#fff6ef"/>
+    <path d="M60 108 Q40 128 56 140" stroke="${P.orange}" stroke-width="10" fill="none" stroke-linecap="round"/>
+    <path d="M80 138 L70 166 M120 138 L130 166" stroke="${P.orange}" stroke-width="7" stroke-linecap="round"/>`, "bob"),
+  moral_star: svg(`<polygon points="100,26 116,72 166,72 126,104 140,150 100,122 60,150 74,104 34,72 84,72" fill="${P.yellow}" stroke="#f0d36a" stroke-width="3"/>
+    ${eyes(90,110,88)}
+    <path d="M88 100 q12 12 24 0" stroke="${P.dark}" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <circle cx="80" cy="96" r="6" fill="${P.cheek}"/><circle cx="120" cy="96" r="6" fill="${P.cheek}"/>`, "pulse"),
+  lion_sleep: svg(`<circle cx="100" cy="90" r="44" fill="${P.orange}"/>
+    <circle cx="100" cy="90" r="30" fill="${P.yellow}"/>
+    <path d="M82 86 L92 86 M108 86 L118 86" stroke="${P.dark}" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="78" cy="94" r="6" fill="${P.cheek}"/><circle cx="122" cy="94" r="6" fill="${P.cheek}"/>
+    <ellipse cx="100" cy="100" rx="6" ry="4" fill="${P.pink}"/>
+    <path d="M70 140 Q100 160 130 140 Z" fill="${P.yellow}"/>
+    <text x="140" y="70" font-size="18">💤</text>`, "bob"),
+  lion_catch: svg(`<circle cx="100" cy="80" r="40" fill="${P.orange}"/>
+    <circle cx="100" cy="80" r="28" fill="${P.yellow}"/>
+    ${eyes(90,110,76)}
+    <ellipse cx="100" cy="90" rx="6" ry="4" fill="${P.pink}"/>
+    <circle cx="82" cy="84" r="5" fill="${P.cheek}"/><circle cx="118" cy="84" r="5" fill="${P.cheek}"/>
+    <ellipse cx="100" cy="148" rx="14" ry="10" fill="${P.grey}"/>
+    <circle cx="100" cy="148" r="5" fill="${P.pink}"/>
+    <path d="M86 128 Q100 120 114 128 L114 160 Q100 168 86 160 Z" fill="${P.yellow}"/>`, "bob"),
+  mouse_beg: svg(`<ellipse cx="100" cy="120" rx="38" ry="30" fill="${P.grey}"/>
+    <circle cx="72" cy="86" r="18" fill="${P.grey2}"/><circle cx="128" cy="86" r="18" fill="${P.grey2}"/>
+    <circle cx="72" cy="86" r="10" fill="${P.pink}"/><circle cx="128" cy="86" r="10" fill="${P.pink}"/>
+    ${eyes(90,110,108)}
+    <path d="M80 104 Q80 80 70 76" stroke="#f6d9c0" stroke-width="5" fill="none" stroke-linecap="round"/>
+    <path d="M120 104 Q120 80 130 76" stroke="#f6d9c0" stroke-width="5" fill="none" stroke-linecap="round"/>
+    <circle cx="100" cy="118" r="4" fill="${P.pink2}"/>
+    <text x="100" y="166" font-size="14" text-anchor="middle" fill="${P.dark}">🙏</text>`, "bob"),
+  lion_kind: svg(`<circle cx="100" cy="80" r="40" fill="${P.orange}"/>
+    <circle cx="100" cy="80" r="28" fill="${P.yellow}"/>
+    ${eyes(90,110,74)}
+    <path d="M90 90 q10 10 20 0" stroke="${P.dark}" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <circle cx="80" cy="86" r="6" fill="${P.cheek}"/><circle cx="120" cy="86" r="6" fill="${P.cheek}"/>
+    <ellipse cx="60" cy="140" rx="12" ry="8" fill="${P.grey}"/>
+    <circle cx="60" cy="140" r="4" fill="${P.pink}"/>
+    <path d="M72 140 Q86 136 96 120" stroke="${P.dark}" stroke-width="2" stroke-dasharray="4 3" fill="none"/>`, "bob"),
+  lion_net: svg(`<circle cx="100" cy="80" r="36" fill="${P.orange}"/>
+    <circle cx="100" cy="80" r="24" fill="${P.yellow}"/>
+    ${eyes(92,108,76)}
+    <path d="M92 90 q8 4 16 0" stroke="${P.dark}" stroke-width="2.5" fill="none"/>
+    <g stroke="${P.brown2}" stroke-width="3" fill="none">
+    <path d="M50 60 L150 60 L150 160 L50 160 Z"/>
+    <path d="M50 90 L150 90 M50 120 L150 120 M50 150 L150 150"/>
+    <path d="M80 60 L80 160 M110 60 L110 160"/></g>`, "wiggle"),
+  mouse_help: svg(`<ellipse cx="80" cy="110" rx="30" ry="24" fill="${P.grey}"/>
+    <circle cx="58" cy="88" r="14" fill="${P.grey2}"/><circle cx="102" cy="88" r="14" fill="${P.grey2}"/>
+    <circle cx="58" cy="88" r="7" fill="${P.pink}"/><circle cx="102" cy="88" r="7" fill="${P.pink}"/>
+    <g class="blink"><circle cx="72" cy="104" r="3.5" fill="${P.dark}"/><circle cx="88" cy="104" r="3.5" fill="${P.dark}"/></g>
+    <circle cx="80" cy="112" r="3" fill="${P.pink2}"/>
+    <g stroke="${P.brown2}" stroke-width="2" fill="none">
+    <path d="M120 70 L170 70 L170 150 L120 150"/>
+    <path d="M120 100 L170 100 M120 130 L170 130"/>
+    <path d="M140 70 L140 150"/></g>
+    <path d="M118 96 L126 104" stroke="${P.red}" stroke-width="4" stroke-linecap="round"/>`, "wiggle"),
 };
 // NOTE: vowel tracing outlines live in trace-paths.js (TRACE), generated from the real
 // Tamil Sangam MN glyphs via tools/gen-trace.mjs.

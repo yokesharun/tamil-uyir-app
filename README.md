@@ -6,9 +6,12 @@ A simple, colorful, **kawaii** web app that helps young children learn Tamil:
 - **மெய் எழுத்துக்கள்** — the 18 consonants
 - **எண்கள்** — numbers 1–10 (Tamil digit + Arabic numeral + counting pictures)
 - **உயிர்மெய் (க)** — the க-family combined letters (க கா கி … கௌ) as a demo set
+- **பாடல்** — Tamil rhymes: ஆத்திசூடி (10 classic couplets) and அம்மா இங்கே வா! வா!
+- **கதைகள்** — Tamil stories: காக்கா வடை கதை (Crow & Vada) and சிங்கமும் எலியும் (Lion & Mouse)
 
 Each card shows a big letter/number, a cute hand-drawn pastel picture, the example word,
 and an optional romanization — in an auto-playing slideshow a toddler can just watch.
+Rhymes and stories play as card-by-card slideshows with Tamil audio narration.
 
 ## Features
 - 🌸 **Tap-to-start splash** — the first tap unlocks audio (needed on mobile) and begins.
@@ -45,7 +48,8 @@ and an optional romanization — in an auto-playing slideshow a toddler can just
 | `styles.css` | Pastel theme, layout, responsive rules, animations, quiz/splash |
 | `app.js` | The 4 sets, slideshow + audio logic, quiz, stars, toggles, SW registration |
 | `art.js` | All inline SVG drawings + the `countArt()` helper |
-| `audio/*.m4a` | Pre-recorded Tamil pronunciation clips (letter + word per item) |
+| `content.js` | Tamil rhymes (ஆத்திசூடி, அம்மா வா) and stories (crow/vada, lion/mouse) data |
+| `audio/*.m4a` | Pre-recorded Tamil pronunciation clips (letters, words, rhyme/story lines) |
 | `trace-paths.js` | Exact vowel outlines for tracing (generated from Tamil Sangam MN) |
 | `tools/gen-audio.mjs` | Regenerates the `audio/` clips (macOS only) |
 | `tools/gen-trace.mjs` | Regenerates `trace-paths.js` outlines via fontkit (macOS only) |

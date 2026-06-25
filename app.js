@@ -166,6 +166,7 @@ function buildStrip() {
 
 // ---- learn-mode render ----
 function render(celebrate, silent) {
+  if (contentMode && contentMode.items) return;
   const item = letters[idx];
   stage.innerHTML = `
     <div class="card">
@@ -404,8 +405,125 @@ function applyRoman() {
   romanBtn.classList.toggle("on", showRoman);
 }
 
+// ---- content mode (rhymes & stories) ----
+let contentMode = null;   // null | { type: 'rhyme'|'story', key: string, items: [], idx: 0 }
+
+function showContentPicker(type) {
+  if (quizMode) { gameMode = null; quizMode = false; document.body.classList.remove("quiz"); quizBtn.classList.remove("on"); stopTrace(); }
+  clearTimeout(advanceTimer); stopAudio();
+  playing = false; playBtn.textContent = "▶";
+  contentMode = { type };
+  document.body.classList.add("content-mode");
+  tabs.forEach((t) => {
+    t.classList.toggle("active", t.dataset.content === type);
+    if (t.dataset.content === type) t.scrollIntoView({ inline: "center", block: "nearest", behavior: "smooth" });
+  });
+
+  const catalog = type === "rhyme" ? RHYMES : STORIES;
+  stage.innerHTML = `<div class="content-picker">
+    <div class="picker-title">${type === "rhyme" ? "பாடல்கள் 🎵" : "கதைகள் 📖"}</div>
+    <div class="picker-grid">
+      ${Object.entries(catalog).map(([key, c]) =>
+        `<button class="picker-card" data-key="${key}">
+          <span class="picker-icon">${c.icon}</span>
+          <span class="picker-name" lang="ta">${c.title}</span>
+          <span class="picker-en">${c.titleEn}</span>
+        </button>`).join("")}
+    </div></div>`;
+  stripBox.innerHTML = "";
+  stage.querySelectorAll(".picker-card").forEach((b) =>
+    b.addEventListener("click", (e) => { e.stopPropagation(); startContent(type, b.dataset.key); }));
+}
+
+function startContent(type, key) {
+  const catalog = type === "rhyme" ? RHYMES : STORIES;
+  const data = catalog[key];
+  if (!data) return;
+  contentMode = { type, key, items: data.items, idx: 0, title: data.title };
+  buildContentStrip();
+  renderContent();
+}
+
+function buildContentStrip() {
+  if (!contentMode || !contentMode.items) return;
+  stripBox.innerHTML = "";
+  contentMode.items.forEach((_, i) => {
+    const b = document.createElement("button");
+    b.className = "chip";
+    b.textContent = i + 1;
+    b.addEventListener("click", (e) => {
+      e.stopPropagation(); clearTimeout(advanceTimer);
+      contentMode.idx = i; renderContent();
+    });
+    stripBox.appendChild(b);
+  });
+}
+
+function renderContent() {
+  if (!contentMode || !contentMode.items) return;
+  const item = contentMode.items[contentMode.idx];
+  const artSvg = ART[item.art] || "";
+  stage.innerHTML = `<div class="card content-card">
+    <div class="content-art">${artSvg}</div>
+    <div class="content-text" lang="ta">${item.text}</div>
+    <div class="content-en">${item.en}</div>
+    <div class="content-nav">
+      <button class="ctrl content-prev" ${contentMode.idx === 0 ? "disabled" : ""}>⟨</button>
+      <button class="say" aria-label="Say it again">🔊</button>
+      <button class="ctrl content-next">${contentMode.idx < contentMode.items.length - 1 ? "⟩" : "✓"}</button>
+    </div>
+    <button class="content-back">← ${contentMode.type === "rhyme" ? "பாடல்கள்" : "கதைகள்"}</button>
+    <div class="sparkles">${"<span></span>".repeat(6)}</div>
+  </div>`;
+
+  const chips = [...stripBox.children];
+  chips.forEach((c, i) => c.classList.toggle("active", i === contentMode.idx));
+  if (chips[contentMode.idx]) chips[contentMode.idx].scrollIntoView({ inline: "center", block: "nearest", behavior: "smooth" });
+
+  stage.querySelector(".content-prev").addEventListener("click", (e) => { e.stopPropagation(); goContent(-1); });
+  stage.querySelector(".content-next").addEventListener("click", (e) => {
+    e.stopPropagation();
+    if (contentMode.idx >= contentMode.items.length - 1) { showContentPicker(contentMode.type); return; }
+    goContent(1);
+  });
+  stage.querySelector(".say").addEventListener("click", (e) => { e.stopPropagation(); speakContent(item); });
+  stage.querySelector(".content-back").addEventListener("click", (e) => { e.stopPropagation(); showContentPicker(contentMode.type); });
+
+  clearTimeout(advanceTimer);
+  speakContent(item, () => {
+    if (playing && contentMode && contentMode.idx < contentMode.items.length - 1) {
+      advanceTimer = setTimeout(() => goContent(1), LINGER);
+    }
+  });
+}
+
+function goContent(step) {
+  clearTimeout(advanceTimer); stopAudio();
+  contentMode.idx = Math.max(0, Math.min(contentMode.items.length - 1, contentMode.idx + step));
+  renderContent();
+}
+
+function speakContent(item, onDone) {
+  const done = typeof onDone === "function" ? onDone : () => {};
+  if (muted || !item) { advanceTimer = setTimeout(done, SILENT_VIEW); return; }
+  const audioKey = `${contentMode.type === "rhyme" ? "rhyme" : "story"}-${contentMode.key}-${contentMode.idx}`;
+  playClip(`audio/${audioKey}.m4a`).then(done);
+}
+
+function exitContentMode() {
+  contentMode = null;
+  document.body.classList.remove("content-mode");
+  buildStrip(); render();
+}
+
 // ---- events ----
-tabs.forEach((t) => t.addEventListener("click", () => switchSet(t.dataset.set)));
+tabs.forEach((t) => {
+  t.addEventListener("click", () => {
+    if (t.dataset.content) { showContentPicker(t.dataset.content); return; }
+    if (contentMode) exitContentMode();
+    switchSet(t.dataset.set);
+  });
+});
 playBtn.addEventListener("click", () => setPlaying(!playing));
 document.getElementById("next").addEventListener("click", () => { if (!quizMode) go(1); });
 document.getElementById("prev").addEventListener("click", () => { if (!quizMode) go(-1); });
@@ -417,7 +535,7 @@ repeatBtn.addEventListener("click", () => setMode("repeat"));
 
 // tap the letter to replay; tap elsewhere on the card to advance (learn mode only)
 stage.addEventListener("click", (e) => {
-  if (quizMode) return;
+  if (quizMode || (contentMode && contentMode.items)) return;
   if (e.target.closest(".letter-panel")) { speak(letters[idx]); return; }
   if (e.target.closest(".say")) return;
   go(1);
@@ -435,7 +553,7 @@ document.addEventListener("visibilitychange", () => {
   if (document.hidden) {
     clearTimeout(advanceTimer);
     stopAudio();
-  } else if (started && playing && !quizMode) {
+  } else if (started && playing && !quizMode && !(contentMode && contentMode.items)) {
     render();
   }
 });
